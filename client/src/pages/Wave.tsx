@@ -69,7 +69,7 @@ export default function Wave() {
             width={460}
             name="Julian Bradley"
             phone="267-918-8060"
-            email="Duane@AIAcrobatics.com"
+            email="Duane@AIAcrobatics"
             align="left"
           />
         </div>
