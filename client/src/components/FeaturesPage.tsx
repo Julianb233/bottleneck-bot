@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 import { ArrowRight, Zap, Brain, Globe, Database, Shield, Activity, Code, Lock, CheckCircle2, Sparkles, Menu, X } from 'lucide-react';
 import { SkipLink } from './SkipLink';
 import { useState } from 'react';
+import { ThemeToggle } from './ThemeToggle';
 
 interface FeaturesPageProps {
   onGetStarted: () => void;
@@ -150,12 +151,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col font-sans">
+    <div className="min-h-screen bg-gradient-to-b from-background via-secondary/20 to-accent/10 text-foreground flex flex-col font-sans">
       {/* Skip Navigation Link for Accessibility */}
       <SkipLink />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-xl border-b border-gray-700 shadow-lg" role="navigation" aria-label="Main navigation">
+      <nav className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm" role="navigation" aria-label="Main navigation">
         <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-600 via-green-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-md relative overflow-hidden">
@@ -163,13 +164,13 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
               <Sparkles className="w-4 h-4 sm:w-7 sm:h-7 text-white fill-white relative z-10" aria-hidden="true" />
             </div>
             <div>
-              <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 bg-clip-text text-transparent">Bottleneck Bot</span>
-              <div className="hidden sm:block text-[11px] text-gray-400 font-semibold -mt-1">Powerful Features</div>
+              <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent">Bottleneck Bot</span>
+              <div className="hidden sm:block text-[11px] text-gray-600 dark:text-gray-400 font-semibold -mt-1">Powerful Features</div>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-300">
+          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
             {onNavigateHome ? (
               <a href="#" onClick={(e) => { e.preventDefault(); onNavigateHome(); }} className="hover:text-emerald-400 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 rounded-md px-2 py-1">Home</a>
             ) : (
@@ -181,34 +182,39 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-gray-300 hover:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 rounded-md"
+            className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 rounded-md"
             aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
           </button>
 
-          <div className="hidden lg:flex items-center gap-2 sm:gap-4">
-            <Button onClick={onGetStarted} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white shadow-md hover:shadow-lg rounded-full px-3 sm:px-6 text-xs sm:text-sm font-bold relative overflow-hidden group">
-              <span className="relative z-10 flex items-center gap-1 sm:gap-2">
-                Get Started <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </Button>
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            
+            <div className="hidden lg:flex items-center gap-2 sm:gap-4">
+              <Button onClick={onGetStarted} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white shadow-md hover:shadow-lg rounded-full px-3 sm:px-6 text-xs sm:text-sm font-bold relative overflow-hidden group">
+                <span className="relative z-10 flex items-center gap-1 sm:gap-2">
+                  Get Started <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-gray-900 border-b border-gray-700 shadow-lg z-50">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg z-50">
             <nav className="flex flex-col p-4 gap-4">
               {onNavigateHome ? (
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigateHome(); setIsMobileMenuOpen(false); }} className="text-sm font-medium text-gray-300 hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-800 transition-colors">Home</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); onNavigateHome(); setIsMobileMenuOpen(false); }} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Home</a>
               ) : (
-                <a href="/" className="text-sm font-medium text-gray-300 hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-800 transition-colors">Home</a>
+                <a href="/" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Home</a>
               )}
-              <a href="#features" onClick={(e) => scrollToSection(e, 'features')} className="text-sm font-medium text-gray-300 hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-800 transition-colors">Features</a>
-              <hr className="border-gray-700" />
+              <a href="#features" onClick={(e) => scrollToSection(e, 'features')} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Features</a>
+              <hr className="border-gray-200 dark:border-gray-800" />
               <Button onClick={onGetStarted} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white rounded-full font-bold">
                 Get Started <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
               </Button>
@@ -218,10 +224,10 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
       </nav>
 
       {/* Hero Section */}
-      <header id="main-content" className="relative pt-12 sm:pt-20 pb-12 sm:pb-16 overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800" role="banner">
+      <header id="main-content" className="relative pt-12 sm:pt-20 pb-12 sm:pb-16 overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-accent/10" role="banner">
         {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/30 via-green-900/20 to-transparent opacity-60"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-teal-900/30 via-transparent to-transparent opacity-40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/30 via-green-900/20 to-transparent opacity-60 dark:opacity-40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-teal-900/30 via-transparent to-transparent opacity-40 dark:opacity-30"></div>
 
         {/* Floating elements */}
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-full blur-3xl animate-float"></div>
@@ -230,14 +236,14 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           {/* Main Headline */}
           <div className="text-center mb-12 sm:mb-16">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-4 sm:mb-6 max-w-5xl mx-auto leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-4 sm:mb-6 max-w-5xl mx-auto leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 text-foreground">
               Powerful Features for
               <span className="block sm:inline"> </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500">
                 Agency Growth
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
               Enterprise-grade AI capabilities designed to scale your agency without scaling your headcount
             </p>
           </div>
@@ -245,13 +251,13 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
       </header>
 
       {/* Features Grid */}
-      <section id="features" className="py-12 sm:py-24 bg-gradient-to-b from-gray-800 to-gray-900">
+      <section id="features" className="py-12 sm:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
             {features.map((feature, i) => (
               <div
                 key={i}
-                className={`group ${feature.bgColor} p-6 sm:p-8 rounded-2xl border-2 ${feature.borderColor} hover:shadow-2xl transition-all duration-300 relative overflow-hidden`}
+                className={`group bg-card p-6 sm:p-8 rounded-2xl border-2 border-border hover:shadow-2xl transition-all duration-300 relative overflow-hidden`}
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 {/* Coming Soon Badge */}
@@ -269,12 +275,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
                 </div>
 
                 {/* Title */}
-                <h3 className={`text-xl sm:text-2xl font-bold ${feature.textColor} mb-3`}>
+                <h3 className={`text-xl sm:text-2xl font-bold text-card-foreground mb-3`}>
                   {feature.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
                   {feature.description}
                 </p>
 
@@ -282,8 +288,8 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
                 <div className="space-y-2">
                   {feature.benefits.map((benefit, j) => (
                     <div key={j} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm text-gray-600">{benefit}</span>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-muted-foreground">{benefit}</span>
                     </div>
                   ))}
                 </div>
@@ -294,44 +300,44 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
       </section>
 
       {/* Additional Features Highlight */}
-      <section className="py-12 sm:py-24 bg-gradient-to-b from-gray-900 to-gray-800">
+      <section className="py-12 sm:py-24 bg-secondary/50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
-              Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Scale</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6 text-foreground">
+              Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Scale</span>
             </h2>
-            <p className="text-lg sm:text-xl text-gray-300">
+            <p className="text-lg sm:text-xl text-muted-foreground">
               Every feature is designed with one goal: help you grow your agency without sacrificing your sanity
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <div className="bg-gray-800/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-gray-700 hover:border-emerald-500 transition-all duration-300">
+            <div className="bg-card backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border hover:border-emerald-500 transition-all duration-300">
               <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mb-4">
                 <Lock className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Secure by Default</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <h3 className="text-xl font-bold text-card-foreground mb-3">Secure by Default</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 Enterprise-grade security with SOC 2 compliance, end-to-end encryption, and comprehensive audit logging
               </p>
             </div>
 
-            <div className="bg-gray-800/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-gray-700 hover:border-emerald-500 transition-all duration-300">
+            <div className="bg-card backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border hover:border-emerald-500 transition-all duration-300">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4">
                 <Zap className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Lightning Fast</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <h3 className="text-xl font-bold text-card-foreground mb-3">Lightning Fast</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 Optimized infrastructure ensuring sub-second response times and 99.9% uptime for mission-critical operations
               </p>
             </div>
 
-            <div className="bg-gray-800/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-gray-700 hover:border-emerald-500 transition-all duration-300">
+            <div className="bg-card backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border hover:border-emerald-500 transition-all duration-300">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center mb-4">
                 <Brain className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Always Learning</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <h3 className="text-xl font-bold text-card-foreground mb-3">Always Learning</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 AI models continuously improve from every interaction, becoming smarter and more efficient over time
               </p>
             </div>
@@ -371,47 +377,47 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onGetStarted, onNavi
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-8 sm:py-12 border-t border-gray-800">
+      <footer className="bg-secondary text-muted-foreground py-8 sm:py-12 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold text-white text-sm sm:text-base mb-3 sm:mb-4">Product</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-3 sm:mb-4">Product</h3>
               <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#features" className="hover:text-emerald-400 transition-colors">Features</a></li>
-                <li><a href="/#pricing" className="hover:text-emerald-400 transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Integrations</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Changelog</a></li>
+                <li><a href="#features" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Features</a></li>
+                <li><a href="/#pricing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Integrations</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Changelog</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-white text-sm sm:text-base mb-3 sm:mb-4">Company</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-3 sm:mb-4">Company</h3>
               <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Contact</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-white text-sm sm:text-base mb-3 sm:mb-4">Resources</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-3 sm:mb-4">Resources</h3>
               <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Status</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Community</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Status</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-white text-sm sm:text-base mb-3 sm:mb-4">Legal</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-3 sm:mb-4">Legal</h3>
               <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Security</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Compliance</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Privacy</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Terms</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Security</a></li>
+                <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Compliance</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm">
+          <div className="border-t border-border pt-6 sm:pt-8 text-center text-xs sm:text-sm">
             <p>&copy; 2025 Bottleneck Bot. All rights reserved.</p>
           </div>
         </div>

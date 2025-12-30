@@ -26,7 +26,7 @@ export function useAuth() {
       toast.success('Logged out successfully');
       setLocation('/login');
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error('Logout failed: ' + error.message);
     },
   });
@@ -51,18 +51,12 @@ export function useAuth() {
         throw new Error(data.error || 'Login failed');
       }
 
-      // Refetch user data
+      // Refetch user data - App.tsx will handle redirect automatically
       await refetch();
 
       toast.success('Login successful!');
 
-      // Redirect based on onboarding status
-      if (data.user?.onboardingCompleted === false) {
-        setLocation('/onboarding');
-      } else {
-        setLocation('/dashboard');
-      }
-
+      // Don't redirect manually - App.tsx useEffect will handle it based on user state
       return data;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Login failed';
