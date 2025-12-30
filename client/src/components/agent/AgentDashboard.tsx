@@ -32,6 +32,7 @@ import {
 } from '@/components/subscription';
 import { BrowserLiveView } from './BrowserLiveView';
 import { ReasoningChain } from './ReasoningChain';
+import { ParticleAnimation } from '@/components/ui/particle-animation';
 import {
   Bot,
   Play,
@@ -432,8 +433,15 @@ export function AgentDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
-      <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+    <div className="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6 relative">
+      {/* Particle Animation Background - only show when idle */}
+      {status === 'idle' && !currentTask && (
+        <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
+          <ParticleAnimation />
+        </div>
+      )}
+      
+      <div className="relative z-10 mx-auto max-w-7xl space-y-4 sm:space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:w-auto">
