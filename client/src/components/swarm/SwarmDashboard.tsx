@@ -44,6 +44,7 @@ import {
 import { SwarmList } from './SwarmList';
 import { AgentTypesBrowser } from './AgentTypesBrowser';
 import { SwarmMetrics } from './SwarmMetrics';
+import { toast } from 'sonner';
 
 export function SwarmDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -70,10 +71,16 @@ export function SwarmDashboard() {
   );
 
   const handleRefreshAll = () => {
-    refetchHealth();
-    refetchMetrics();
-    refetchSwarms();
-    refetchQueue();
+    Promise.all([
+      refetchHealth(),
+      refetchMetrics(),
+      refetchSwarms(),
+      refetchQueue(),
+    ]).then(() => {
+      toast.success('Dashboard refreshed');
+    }).catch((error) => {
+      toast.error('Failed to refresh: ' + (error?.message || 'Unknown error'));
+    });
   };
 
   const isLoading = healthLoading || metricsLoading || swarmsLoading;
@@ -438,10 +445,14 @@ function CreateSwarmForm({ onSuccess }: { onSuccess: () => void }) {
   const [autoScaling, setAutoScaling] = useState(true);
 
   const executeQuick = trpc.swarm.executeQuick.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       setObjective('');
       setName('');
+      toast.success(`Swarm "${data.swarmId.slice(0, 8)}" created and started successfully!`);
       onSuccess();
+    },
+    onError: (error) => {
+      toast.error('Failed to create swarm: ' + (error.message || 'Unknown error'));
     },
   });
 

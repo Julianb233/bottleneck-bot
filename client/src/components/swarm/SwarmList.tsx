@@ -35,6 +35,7 @@ import {
   Sparkles,
   ChevronRight,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SwarmListProps {
   swarms: any[];
@@ -51,7 +52,11 @@ export function SwarmList({ swarms, onRefresh }: SwarmListProps) {
 
   const stopSwarm = trpc.swarm.stop.useMutation({
     onSuccess: () => {
+      toast.success('Swarm stopped successfully');
       onRefresh();
+    },
+    onError: (error) => {
+      toast.error('Failed to stop swarm: ' + (error.message || 'Unknown error'));
     },
   });
 
@@ -65,7 +70,13 @@ export function SwarmList({ swarms, onRefresh }: SwarmListProps) {
             <p className="text-muted-foreground mb-4">
               Create a new swarm to start multi-agent coordination
             </p>
-            <Button variant="outline" onClick={onRefresh}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                onRefresh();
+                toast.info('Refreshing swarms...');
+              }}
+            >
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh
             </Button>
@@ -82,7 +93,14 @@ export function SwarmList({ swarms, onRefresh }: SwarmListProps) {
           <h2 className="text-lg font-semibold">Active Swarms ({swarms.length})</h2>
           <p className="text-sm text-muted-foreground">Manage running swarm coordinations</p>
         </div>
-        <Button variant="outline" size="sm" onClick={onRefresh}>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => {
+            onRefresh();
+            toast.info('Refreshing swarms...');
+          }}
+        >
           <RefreshCw className="h-4 w-4 mr-2" />
           Refresh
         </Button>

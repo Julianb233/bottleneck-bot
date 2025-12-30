@@ -28,6 +28,7 @@ import {
   Users,
   RefreshCw,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Category icon mapping
 const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -115,7 +116,15 @@ export function AgentTypesBrowser() {
             Specialized agents available for swarm coordination
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => refetch()}>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => {
+            refetch()
+              .then(() => toast.success('Agent types refreshed'))
+              .catch((error) => toast.error('Failed to refresh: ' + (error?.message || 'Unknown error')));
+          }}
+        >
           <RefreshCw className="h-4 w-4 mr-2" />
           Refresh
         </Button>
