@@ -1,269 +1,281 @@
 "use client";
 
 import * as React from "react";
-import { Eye } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface AnimatedCharacterProps {
-  isTyping?: boolean;
-  isPasswordVisible?: boolean;
-  className?: string;
-}
-
-function AnimatedCharacter({
-  isTyping = false,
-  isPasswordVisible = false,
-  className,
-}: AnimatedCharacterProps) {
-  const [isBlinking, setIsBlinking] = React.useState(false);
-
-  // Blink animation every 3-5 seconds
-  React.useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 150);
-    }, Math.random() * 2000 + 3000);
-
-    return () => clearInterval(blinkInterval);
-  }, []);
-
-  return (
-    <div className={cn("relative w-full h-full flex items-center justify-center", className)}>
-      <svg
-        viewBox="0 0 200 200"
-        className="w-full h-full max-w-[200px] max-h-[200px]"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Character Body */}
-        <g id="character">
-          {/* Head */}
-          <circle
-            cx="100"
-            cy="80"
-            r="45"
-            fill="#FFE5B4"
-            className="transition-all duration-300"
-            style={{
-              transform: isTyping ? "scale(1.05)" : "scale(1)",
-            }}
-          />
-
-          {/* Eyes */}
-          <g id="eyes">
-            {/* Left Eye */}
-            <ellipse
-              cx="85"
-              cy="75"
-              rx="8"
-              ry={isBlinking || isTyping ? "1" : "12"}
-              fill="#000"
-              className="transition-all duration-150"
-              style={{
-                transform: isTyping ? "translateX(-2px)" : "translateX(0)",
-              }}
-            />
-            {/* Right Eye */}
-            <ellipse
-              cx="115"
-              cy="75"
-              rx="8"
-              ry={isBlinking || isTyping ? "1" : "12"}
-              fill="#000"
-              className="transition-all duration-150"
-              style={{
-                transform: isTyping ? "translateX(2px)" : "translateX(0)",
-              }}
-            />
-
-            {/* Eye shine */}
-            {!isBlinking && !isTyping && (
-              <>
-                <circle cx="88" cy="72" r="3" fill="#fff" />
-                <circle cx="118" cy="72" r="3" fill="#fff" />
-              </>
-            )}
-          </g>
-
-          {/* Mouth - changes based on typing */}
-          <path
-            d={
-              isTyping
-                ? "M 85 95 Q 100 105 115 95"
-                : isPasswordVisible
-                ? "M 85 95 Q 100 110 115 95"
-                : "M 90 95 Q 100 100 110 95"
-            }
-            stroke="#000"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            className="transition-all duration-300"
-          />
-
-          {/* Cheeks - appear when typing */}
-          {isTyping && (
-            <g className="animate-fade-in">
-              <circle cx="70" cy="85" r="8" fill="#FFB6C1" opacity="0.6" />
-              <circle cx="130" cy="85" r="8" fill="#FFB6C1" opacity="0.6" />
-            </g>
-          )}
-
-          {/* Body */}
-          <ellipse
-            cx="100"
-            cy="150"
-            rx="35"
-            ry="40"
-            fill="#4A90E2"
-            className="transition-all duration-300"
-            style={{
-              transform: isTyping ? "scale(1.05)" : "scale(1)",
-            }}
-          />
-
-          {/* Arms */}
-          <g id="arms">
-            {/* Left Arm */}
-            <ellipse
-              cx="65"
-              cy="140"
-              rx="12"
-              ry="25"
-              fill="#4A90E2"
-              className="transition-all duration-300"
-              style={{
-                transform: isTyping
-                  ? "rotate(-20deg) translateX(-5px)"
-                  : "rotate(0deg)",
-                transformOrigin: "65px 140px",
-              }}
-            />
-            {/* Right Arm */}
-            <ellipse
-              cx="135"
-              cy="140"
-              rx="12"
-              ry="25"
-              fill="#4A90E2"
-              className="transition-all duration-300"
-              style={{
-                transform: isTyping
-                  ? "rotate(20deg) translateX(5px)"
-                  : "rotate(0deg)",
-                transformOrigin: "135px 140px",
-              }}
-            />
-          </g>
-
-          {/* Hands */}
-          <circle
-            cx="60"
-            cy="160"
-            r="8"
-            fill="#FFE5B4"
-            className="transition-all duration-300"
-            style={{
-              transform: isTyping
-                ? "rotate(-20deg) translateX(-5px) translateY(-5px)"
-                : "translate(0, 0)",
-            }}
-          />
-          <circle
-            cx="140"
-            cy="160"
-            r="8"
-            fill="#FFE5B4"
-            className="transition-all duration-300"
-            style={{
-              transform: isTyping
-                ? "rotate(20deg) translateX(5px) translateY(-5px)"
-                : "translate(0, 0)",
-            }}
-          />
-        </g>
-
-        {/* Thought bubble when password is visible */}
-        {isPasswordVisible && (
-          <g id="thought-bubble" className="animate-fade-in">
-            <path
-              d="M 150 60 Q 160 50 170 60 Q 160 70 150 60"
-              fill="#fff"
-              stroke="#4A90E2"
-              strokeWidth="2"
-            />
-            <circle cx="165" cy="55" r="12" fill="#fff" stroke="#4A90E2" strokeWidth="2" />
-            <circle cx="175" cy="50" r="8" fill="#fff" stroke="#4A90E2" strokeWidth="2" />
-            {/* Eye icon in thought bubble */}
-            <g transform="translate(158, 48)">
-              <path
-                d="M 2 4 C 2 2, 4 0, 6 0 C 8 0, 10 2, 10 4 C 10 6, 8 8, 6 8 C 4 8, 2 6, 2 4 Z"
-                fill="#4A90E2"
-              />
-              <circle cx="6" cy="4" r="2" fill="#fff" />
-            </g>
-          </g>
-        )}
-
-        {/* Typing indicator */}
-        {isTyping && (
-          <g id="typing-indicator" className="animate-fade-in">
-            <circle cx="100" cy="200" r="4" fill="#4A90E2" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.4;1;0.4"
-                dur="1s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <circle cx="110" cy="200" r="4" fill="#4A90E2" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.4;1;0.4"
-                dur="1s"
-                begin="0.2s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <circle cx="120" cy="200" r="4" fill="#4A90E2" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.4;1;0.4"
-                dur="1s"
-                begin="0.4s"
-                repeatCount="indefinite"
-              />
-            </circle>
-          </g>
-        )}
-      </svg>
-    </div>
-  );
-}
-
 interface AnimatedCharactersLoginProps {
-  email: string;
-  password: string;
-  showPassword: boolean;
+  children: React.ReactNode;
   className?: string;
 }
 
 export function AnimatedCharactersLogin({
-  email,
-  password,
-  showPassword,
+  children,
   className,
 }: AnimatedCharactersLoginProps) {
-  const isTyping = React.useMemo(
-    () => email.length > 0 || password.length > 0,
-    [email, password]
-  );
-
   return (
-    <div className={cn("relative w-full h-full", className)}>
-      <AnimatedCharacter
-        isTyping={isTyping}
-        isPasswordVisible={showPassword}
-      />
+    <div className={cn("min-h-screen flex", className)}>
+      {/* Left side - Animated Characters */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-black via-[#1a0008] to-[#0d0004]">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          {/* Floating orbs with maroon colors */}
+          <motion.div
+            className="absolute top-20 left-20 w-32 h-32 bg-[#800020]/20 rounded-full blur-3xl"
+            animate={{
+              y: [0, -20, 0],
+              x: [0, 10, 0],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-20 w-40 h-40 bg-[#A00030]/15 rounded-full blur-3xl"
+            animate={{
+              y: [0, 15, 0],
+              x: [0, -15, 0],
+              scale: [1, 1.15, 1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1,
+            }}
+          />
+          <motion.div
+            className="absolute top-1/2 left-1/3 w-24 h-24 bg-[#600010]/20 rounded-full blur-2xl"
+            animate={{
+              y: [0, -10, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
+          />
+        </div>
+
+        {/* Character illustrations */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full p-12">
+          {/* Main character illustration */}
+          <motion.div
+            className="relative mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="relative">
+              {/* Character SVG - Abstract representation with maroon theme */}
+              <svg
+                width="400"
+                height="400"
+                viewBox="0 0 400 400"
+                className="w-full h-auto"
+              >
+                {/* Background circle */}
+                <motion.circle
+                  cx="200"
+                  cy="200"
+                  r="180"
+                  fill="none"
+                  stroke="#800020"
+                  strokeWidth="2"
+                  opacity="0.3"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.3 }}
+                  transition={{ duration: 1 }}
+                />
+
+                {/* Character head - silver/gray */}
+                <motion.circle
+                  cx="200"
+                  cy="150"
+                  r="50"
+                  fill="#C0C0C0"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                />
+
+                {/* Character eyes - black */}
+                <motion.circle
+                  cx="185"
+                  cy="145"
+                  r="8"
+                  fill="#000000"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                />
+                <motion.circle
+                  cx="215"
+                  cy="145"
+                  r="8"
+                  fill="#000000"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                />
+
+                {/* Eye shine - silver */}
+                <motion.circle
+                  cx="182"
+                  cy="142"
+                  r="3"
+                  fill="#FFFFFF"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                />
+                <motion.circle
+                  cx="212"
+                  cy="142"
+                  r="3"
+                  fill="#FFFFFF"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+                />
+
+                {/* Character body - maroon */}
+                <motion.rect
+                  x="150"
+                  y="200"
+                  width="100"
+                  height="120"
+                  rx="20"
+                  fill="#800020"
+                  initial={{ y: 250, opacity: 0 }}
+                  animate={{ y: 200, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                />
+
+                {/* Character arms - maroon */}
+                <motion.line
+                  x1="150"
+                  y1="220"
+                  x2="100"
+                  y2="180"
+                  stroke="#800020"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                />
+                <motion.line
+                  x1="250"
+                  y1="220"
+                  x2="300"
+                  y2="180"
+                  stroke="#800020"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                />
+
+                {/* Character legs - darker maroon */}
+                <motion.line
+                  x1="170"
+                  y1="320"
+                  x2="170"
+                  y2="380"
+                  stroke="#600010"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                />
+                <motion.line
+                  x1="230"
+                  y1="320"
+                  x2="230"
+                  y2="380"
+                  stroke="#600010"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                />
+
+                {/* Floating particles - silver */}
+                {[...Array(6)].map((_, i) => (
+                  <motion.circle
+                    key={i}
+                    cx={100 + i * 50}
+                    cy={50 + (i % 2) * 30}
+                    r="4"
+                    fill="#C0C0C0"
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{
+                      opacity: [0, 1, 0],
+                      y: [0, -30, -60],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                      ease: "easeOut",
+                    }}
+                  />
+                ))}
+              </svg>
+            </div>
+          </motion.div>
+
+          {/* Welcome text */}
+          <motion.div
+            className="text-center space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-2">
+              Welcome Back
+            </h2>
+            <p className="text-[#C0C0C0] text-lg max-w-md">
+              Sign in to continue your journey with us
+            </p>
+          </motion.div>
+
+          {/* Decorative elements - maroon dots */}
+          <div className="absolute bottom-10 left-10 right-10 flex justify-between">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 bg-[#800020] rounded-full"
+                animate={{
+                  y: [0, -10, 0],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right side - Login Form */}
+      <div className="flex-1 flex items-center justify-center p-4 bg-black lg:bg-gradient-to-br lg:from-black lg:via-[#0d0004] lg:to-black">
+        <div className="w-full max-w-md">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
