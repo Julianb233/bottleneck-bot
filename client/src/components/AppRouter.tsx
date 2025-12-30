@@ -15,6 +15,7 @@ const AlexRamozyPage = lazy(() => import('./AlexRamozyPage').then(m => ({ defaul
 const WizardOfAI = lazy(() => import('@/pages/WizardOfAI').then(m => ({ default: m.default })));
 const RobotTest = lazy(() => import('@/pages/RobotTest').then(m => ({ default: m.default })));
 const Wave = lazy(() => import('@/pages/Wave').then(m => ({ default: m.default })));
+const Search = lazy(() => import('@/pages/Search').then(m => ({ default: m.default })));
 
 // Loading spinner component
 const LoadingSpinner = () => (
@@ -103,6 +104,7 @@ export function AppRouter() {
         <Route path="/wizard-of-ai/wave" component={Wave} />
         <Route path="/wave" component={Wave} />
         <Route path="/robot-test" component={RobotTest} />
+        <Route path="/search" component={Search} />
 
         {/* Protected routes */}
         <Route path="/onboarding">
