@@ -39,7 +39,18 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToFeatures }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedPainPointImage, setSelectedPainPointImage] = useState<string | null>(null);
   const { trackCTAClick, trackPricingView } = useConversionTracking();
+
+  // Emotional distress images for each pain point
+  const painPointImages: Record<string, string> = {
+    "GHL Sub-Account Chaos": "/images/pain-points/ghl-chaos.jpg",
+    "Meta Ads on Fire": "/images/pain-points/meta-ads-fire.jpg",
+    "Lead Follow-Up Falls Through": "/images/pain-points/leads-bump.jpg",
+    "Missed Calls = Lost Revenue": "/images/pain-points/missed-calls.jpg",
+    "Client Reporting Nightmare": "/images/pain-points/reporting-nightmare.jpg",
+    "Zapier Breaks at 2AM": "/images/pain-points/zapier-breaks.jpg"
+  };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
@@ -331,17 +342,83 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
             ].map((item, i) => (
               <div
                 key={i}
-                className={`group ${item.bgColor} p-6 sm:p-8 rounded-2xl border-2 ${item.borderColor} hover:shadow-xl transition-all duration-300 text-center`}
+                onClick={() => {
+                  const imagePath = painPointImages[item.title];
+                  if (imagePath) {
+                    setSelectedPainPointImage(imagePath);
+                  }
+                }}
+                className={`group ${item.bgColor} p-6 sm:p-8 rounded-2xl border-2 ${item.borderColor} hover:shadow-xl transition-all duration-300 text-center cursor-pointer hover:scale-105 active:scale-100`}
                 style={{ animationDelay: `${i * 100}ms` }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const imagePath = painPointImages[item.title];
+                    if (imagePath) {
+                      setSelectedPainPointImage(imagePath);
+                    }
+                  }
+                }}
+                aria-label={`Click to see the emotional impact of ${item.title}`}
               >
                 <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform shadow-lg`}>
                   <item.icon className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <h3 className={`text-lg sm:text-xl font-bold ${item.textColor} mb-3`}>{item.title}</h3>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.pain}</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-3 opacity-60 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">Tap to see the impact →</p>
               </div>
             ))}
           </div>
+
+          {/* Emotional Image Modal */}
+          {selectedPainPointImage && (
+            <div
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 animate-in fade-in duration-300"
+              onClick={() => setSelectedPainPointImage(null)}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Emotional impact image"
+            >
+              <div
+                className="relative max-w-4xl max-h-[95vh] sm:max-h-[90vh] w-full h-full bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedPainPointImage(null)}
+                  className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-600 touch-manipulation"
+                  aria-label="Close image"
+                >
+                  <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
+                </button>
+                <div className="w-full h-full flex items-center justify-center overflow-auto">
+                  <img
+                    src={selectedPainPointImage}
+                    alt="Emotional impact of this pain point"
+                    className="w-full h-full object-contain sm:object-cover"
+                    onError={(e) => {
+                      // Fallback if image doesn't exist
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="flex items-center justify-center h-full p-4 sm:p-8 text-center">
+                            <div>
+                              <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">Image placeholder for emotional impact</p>
+                              <p class="text-xs sm:text-sm text-gray-500 break-words px-2">Please add an image at: ${selectedPainPointImage}</p>
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Transition statement */}
           <div className="mt-12 sm:mt-20 text-center max-w-3xl mx-auto">
