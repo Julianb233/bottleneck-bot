@@ -157,10 +157,8 @@ export async function createApp() {
   const nodeEnv = (process.env.NODE_ENV || '').trim();
 
   if (nodeEnv === "development" && !isVercel) {
-    // Dynamically import setupVite to avoid bundling vite/rollup in production
-    const { setupVite } = await import("./vite");
-    const server = createServer(app);
-    await setupVite(app, server);
+    // Vite will be set up in startServer() with the actual server instance
+    // For now, just skip static file serving
   } else {
     serveStatic(app);
   }
@@ -267,6 +265,14 @@ async function initializeMemoryCleanup() {
 async function startServer() {
   const app = await createApp();
   const server = createServer(app);
+
+  // Set up Vite in development mode with the actual server instance
+  const nodeEnv = (process.env.NODE_ENV || '').trim();
+  const isVercel = process.env.VERCEL === "1";
+  if (nodeEnv === "development" && !isVercel) {
+    const { setupVite } = await import("./vite");
+    await setupVite(app, server);
+  }
 
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);

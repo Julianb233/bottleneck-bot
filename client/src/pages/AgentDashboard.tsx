@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { trpcClient } from '@/lib/trpc';
+import { ParticleAnimation } from '@/components/ui/particle-animation';
 
 export function AgentDashboard() {
   const {
@@ -191,9 +192,16 @@ export function AgentDashboard() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col overflow-hidden relative">
+        {/* Particle Animation Background - only show when no active execution */}
+        {!currentExecution && !isExecuting && (
+          <div className="absolute inset-0 z-0 opacity-30">
+            <ParticleAnimation />
+          </div>
+        )}
+
         {/* Task input with template support */}
-        <div className="p-4 border-b border-gray-200 bg-white">
+        <div className="relative z-10 p-4 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
           <TaskInput
             onSubmit={handleSubmitTask}
             isLoading={isExecuting}
@@ -205,7 +213,7 @@ export function AgentDashboard() {
         </div>
 
         {/* Thinking visualization */}
-        <div className="flex-1 overflow-hidden">
+        <div className="relative z-10 flex-1 overflow-hidden bg-white/95 backdrop-blur-sm">
           <AgentThinkingViewer
             execution={currentExecution ? {
               id: String(currentExecution.id),

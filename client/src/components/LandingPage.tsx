@@ -8,6 +8,7 @@ import { CountdownTimer } from './CountdownTimer';
 import { TrustBadges, TrustBadgesInline } from './TrustBadges';
 import { LiveChat } from './LiveChat';
 import { useConversionTracking } from '@/hooks/useConversionTracking';
+import { ThemeToggle } from './ThemeToggle';
 
 
 // Optimized image component with lazy loading and CLS prevention
@@ -38,7 +39,18 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToFeatures }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedPainPointImage, setSelectedPainPointImage] = useState<string | null>(null);
   const { trackCTAClick, trackPricingView } = useConversionTracking();
+
+  // Emotional distress images for each pain point
+  const painPointImages: Record<string, string> = {
+    "GHL Sub-Account Chaos": "/images/pain-points/ghl-chaos.jpg",
+    "Meta Ads on Fire": "/images/pain-points/meta-ads-fire.jpg",
+    "Lead Follow-Up Falls Through": "/images/pain-points/leads-bump.jpg",
+    "Missed Calls = Lost Revenue": "/images/pain-points/missed-calls.jpg",
+    "Client Reporting Nightmare": "/images/pain-points/reporting-nightmare.jpg",
+    "Zapier Breaks at 2AM": "/images/pain-points/zapier-breaks.jpg"
+  };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
@@ -69,7 +81,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
       <SkipLink />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm" role="navigation" aria-label="Main navigation">
+      <nav className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm" role="navigation" aria-label="Main navigation">
         <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-600 via-green-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-md relative overflow-hidden">
@@ -77,13 +89,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
               <Sparkles className="w-4 h-4 sm:w-7 sm:h-7 text-white fill-white relative z-10" aria-hidden="true" />
             </div>
             <div>
-              <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent">GHL Agency AI</span>
-              <div className="hidden sm:block text-[11px] text-gray-600 font-semibold -mt-1">Buy Back Your Freedom</div>
+              <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent">Bottleneck Bot</span>
+              <div className="hidden sm:block text-[11px] text-gray-600 dark:text-gray-400 font-semibold -mt-1">Buy Back Your Freedom</div>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-700">
+          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
             {onNavigateToFeatures && (
               <a href="#" onClick={(e) => { e.preventDefault(); onNavigateToFeatures(); }} className="hover:text-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 rounded-md px-2 py-1">Features</a>
             )}
@@ -104,9 +116,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
           </button>
 
           <div className="flex items-center gap-2 sm:gap-4">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            
             {/* Mobile CTA Buttons - visible below lg breakpoint */}
             <div className="flex lg:hidden items-center gap-2 sm:gap-4">
-              <Button variant="ghost" onClick={() => handleCTAClick('header_mobile_login')} className="font-semibold text-xs sm:text-sm text-gray-700 hover:text-emerald-600 px-2 sm:px-4 min-h-[44px]">
+              <Button variant="ghost" onClick={() => handleCTAClick('header_mobile_login')} className="font-semibold text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-2 sm:px-4 min-h-[44px]">
                 Log In
               </Button>
               <Button onClick={() => handleCTAClick('header_mobile_start_free')} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white shadow-md hover:shadow-lg rounded-full px-3 sm:px-6 text-xs sm:text-sm font-bold relative overflow-hidden group min-h-[44px]">
@@ -118,7 +133,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
             </div>
             {/* Desktop CTA Buttons - visible at lg breakpoint and above */}
             <div className="hidden lg:flex items-center gap-2 sm:gap-4">
-              <Button variant="ghost" onClick={() => handleCTAClick('header_desktop_login')} className="font-semibold text-xs sm:text-sm text-gray-700 hover:text-emerald-600 px-2 sm:px-4">
+              <Button variant="ghost" onClick={() => handleCTAClick('header_desktop_login')} className="font-semibold text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-2 sm:px-4">
                 Log In
               </Button>
               <Button onClick={() => handleCTAClick('header_desktop_start_free')} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white shadow-md hover:shadow-lg rounded-full px-3 sm:px-6 text-xs sm:text-sm font-bold relative overflow-hidden group">
@@ -133,17 +148,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg z-50">
             <nav className="flex flex-col p-4 gap-4">
               {onNavigateToFeatures && (
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigateToFeatures(); setIsMobileMenuOpen(false); }} className="text-sm font-medium text-gray-700 hover:text-emerald-600 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 transition-colors">Features</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); onNavigateToFeatures(); setIsMobileMenuOpen(false); }} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Features</a>
               )}
-              <a href="#problem" onClick={(e) => scrollToSection(e, 'problem')} className="text-sm font-medium text-gray-700 hover:text-emerald-600 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 transition-colors">The Problem</a>
-              <a href="#solution" onClick={(e) => scrollToSection(e, 'solution')} className="text-sm font-medium text-gray-700 hover:text-emerald-600 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 transition-colors">The Solution</a>
-              <a href="#proof" onClick={(e) => scrollToSection(e, 'proof')} className="text-sm font-medium text-gray-700 hover:text-emerald-600 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 transition-colors">Proof</a>
-              <a href="#pricing" onClick={(e) => scrollToSection(e, 'pricing')} className="text-sm font-medium text-gray-700 hover:text-emerald-600 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 transition-colors">Investment</a>
-              <hr className="border-gray-200" />
-              <Button variant="ghost" onClick={() => handleCTAClick('mobile_menu_login')} className="font-semibold text-sm text-gray-700 hover:text-emerald-600 justify-start">
+              <a href="#problem" onClick={(e) => scrollToSection(e, 'problem')} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Problem</a>
+              <a href="#solution" onClick={(e) => scrollToSection(e, 'solution')} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Solution</a>
+              <a href="#proof" onClick={(e) => scrollToSection(e, 'proof')} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Proof</a>
+              <a href="#pricing" onClick={(e) => scrollToSection(e, 'pricing')} className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 py-3 px-4 min-h-[44px] flex items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Investment</a>
+              <hr className="border-gray-200 dark:border-gray-800" />
+              <Button variant="ghost" onClick={() => handleCTAClick('mobile_menu_login')} className="font-semibold text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 justify-start">
                 Log In
               </Button>
               <Button onClick={() => handleCTAClick('mobile_menu_start_free')} className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white rounded-full font-bold">
@@ -327,17 +342,83 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onNavigateToF
             ].map((item, i) => (
               <div
                 key={i}
-                className={`group ${item.bgColor} p-6 sm:p-8 rounded-2xl border-2 ${item.borderColor} hover:shadow-xl transition-all duration-300 text-center`}
+                onClick={() => {
+                  const imagePath = painPointImages[item.title];
+                  if (imagePath) {
+                    setSelectedPainPointImage(imagePath);
+                  }
+                }}
+                className={`group ${item.bgColor} p-6 sm:p-8 rounded-2xl border-2 ${item.borderColor} hover:shadow-xl transition-all duration-300 text-center cursor-pointer hover:scale-105 active:scale-100`}
                 style={{ animationDelay: `${i * 100}ms` }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const imagePath = painPointImages[item.title];
+                    if (imagePath) {
+                      setSelectedPainPointImage(imagePath);
+                    }
+                  }
+                }}
+                aria-label={`Click to see the emotional impact of ${item.title}`}
               >
                 <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-4 sm:mb-5 group-hover:scale-110 transition-transform shadow-lg`}>
                   <item.icon className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <h3 className={`text-lg sm:text-xl font-bold ${item.textColor} mb-3`}>{item.title}</h3>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.pain}</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-3 opacity-60 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">Tap to see the impact →</p>
               </div>
             ))}
           </div>
+
+          {/* Emotional Image Modal */}
+          {selectedPainPointImage && (
+            <div
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 animate-in fade-in duration-300"
+              onClick={() => setSelectedPainPointImage(null)}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Emotional impact image"
+            >
+              <div
+                className="relative max-w-4xl max-h-[95vh] sm:max-h-[90vh] w-full h-full bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedPainPointImage(null)}
+                  className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-600 touch-manipulation"
+                  aria-label="Close image"
+                >
+                  <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
+                </button>
+                <div className="w-full h-full flex items-center justify-center overflow-auto">
+                  <img
+                    src={selectedPainPointImage}
+                    alt="Emotional impact of this pain point"
+                    className="w-full h-full object-contain sm:object-cover"
+                    onError={(e) => {
+                      // Fallback if image doesn't exist
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="flex items-center justify-center h-full p-4 sm:p-8 text-center">
+                            <div>
+                              <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">Image placeholder for emotional impact</p>
+                              <p class="text-xs sm:text-sm text-gray-500 break-words px-2">Please add an image at: ${selectedPainPointImage}</p>
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Transition statement */}
           <div className="mt-12 sm:mt-20 text-center max-w-3xl mx-auto">

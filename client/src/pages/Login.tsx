@@ -92,7 +92,7 @@ export default function Login() {
         <p className="text-[#C0C0C0]">Sign in to your account to continue</p>
       </div>
 
-      <Card className="bg-black/50 border-[#800020]/30 backdrop-blur-sm">
+      <Card className="bg-black/80 border-[#800020]/50 backdrop-blur-sm shadow-2xl">
           <CardHeader>
             <CardTitle className="sr-only">Sign In</CardTitle>
             <CardDescription className="sr-only">Enter your credentials to access your account</CardDescription>
@@ -100,26 +100,27 @@ export default function Login() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-[#C0C0C0]">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={handleEmailChange}
-                  placeholder="anna@gmail.com"
+                  placeholder="you@example.com"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
                   autoComplete="email"
+                  className="bg-black/50 border-[#800020]/30 text-white placeholder:text-[#C0C0C0]/50 focus:border-[#800020] focus:ring-[#800020]"
                 />
                 {errors.email && (
-                  <p id="email-error" className="text-sm text-destructive" role="alert">
+                  <p id="email-error" className="text-sm text-[#800020]" role="alert">
                     {errors.email}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-[#C0C0C0]">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -130,12 +131,12 @@ export default function Login() {
                     aria-invalid={!!errors.password}
                     aria-describedby={errors.password ? 'password-error' : undefined}
                     autoComplete="current-password"
-                    className="pr-10"
+                    className="pr-10 bg-black/50 border-[#800020]/30 text-white placeholder:text-[#C0C0C0]/50 focus:border-[#800020] focus:ring-[#800020]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#C0C0C0] hover:text-[#800020] transition-colors"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                     tabIndex={-1}
                   >
@@ -143,7 +144,7 @@ export default function Login() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p id="password-error" className="text-sm text-destructive" role="alert">
+                  <p id="password-error" className="text-sm text-[#800020]" role="alert">
                     {errors.password}
                   </p>
                 )}
@@ -153,7 +154,7 @@ export default function Login() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="text-primary hover:underline"
+                    className="text-[#800020] hover:text-[#A00030] hover:underline transition-colors"
                     onClick={(e) => {
                       e.preventDefault();
                       toast.info('Password reset feature coming soon!');
@@ -166,7 +167,7 @@ export default function Login() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-[#800020] hover:bg-[#A00030] text-white border-2 border-[#800020] hover:border-[#A00030] shadow-lg hover:shadow-xl transition-all"
                 isLoading={isLoading}
                 loadingText="Signing in..."
                 disabled={!!errors.email || !!errors.password || isLoading}
@@ -178,17 +179,17 @@ export default function Login() {
           <CardFooter className="flex flex-col space-y-4">
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t"></div>
+                <div className="w-full border-t border-[#800020]/30"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-card text-muted-foreground">Or continue with</span>
+                <span className="px-2 bg-black text-[#C0C0C0]">Or continue with</span>
               </div>
             </div>
 
             <Button
               type="button"
               variant="outline"
-              className="w-full"
+              className="w-full border-[#800020]/50 text-[#C0C0C0] hover:bg-[#800020]/10 hover:border-[#800020] hover:text-white transition-all"
               onClick={() => {
                 window.location.href = '/api/oauth/google';
               }}
@@ -215,11 +216,11 @@ export default function Login() {
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
+              <span className="text-[#C0C0C0]">Don't have an account? </span>
               <button
                 type="button"
                 onClick={() => setLocation('/signup')}
-                className="text-primary hover:underline font-medium"
+                className="text-[#800020] hover:text-[#A00030] hover:underline font-medium transition-colors"
               >
                 Sign up
               </button>

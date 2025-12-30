@@ -18,6 +18,7 @@ const OnboardingFlow = lazy(() => import('./components/OnboardingFlow').then(m =
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('./pages/TermsOfService').then(m => ({ default: m.TermsOfService })));
 const OAuthCallback = lazy(() => import('./components/OAuthPopup').then(m => ({ default: m.OAuthCallback })));
+const Search = lazy(() => import('./pages/Search').then(m => ({ default: m.default })));
 
 // Loading spinner component
 const LoadingSpinner = () => (
@@ -29,7 +30,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-type ViewState = 'LANDING' | 'LOGIN' | 'ONBOARDING' | 'DASHBOARD' | 'ALEX_RAMOZY' | 'PRIVACY' | 'TERMS' | 'FEATURES' | 'OAUTH_CALLBACK';
+type ViewState = 'LANDING' | 'LOGIN' | 'ONBOARDING' | 'DASHBOARD' | 'ALEX_RAMOZY' | 'PRIVACY' | 'TERMS' | 'FEATURES' | 'OAUTH_CALLBACK' | 'SEARCH';
 type UserTier = 'STARTER' | 'GROWTH' | 'WHITELABEL';
 
 // Admin email for preview access
@@ -58,10 +59,18 @@ function App() {
     } else if (path === '/auth/callback') {
       // Server-side route handles cookie setting, just refetch user
       refetchUser();
+    } else if (path === '/search') {
+      setCurrentView('SEARCH');
     }
   }, [refetchUser]);
 
   useEffect(() => {
+    const path = window.location.pathname;
+    // Don't override search or other specific routes
+    if (path === '/search') {
+      return;
+    }
+    
     if (user) {
       // User is logged in - check if onboarding is completed
       if (user.onboardingCompleted === false) {
@@ -198,6 +207,10 @@ function App() {
 
               {currentView === 'TERMS' && (
                 <TermsOfService onBack={() => setCurrentView('LANDING')} />
+              )}
+
+              {currentView === 'SEARCH' && (
+                <Search />
               )}
             </Suspense>
             </TourProvider>

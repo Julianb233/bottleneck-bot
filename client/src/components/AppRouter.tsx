@@ -12,6 +12,10 @@ const FeaturesPage = lazy(() => import('./FeaturesPage').then(m => ({ default: m
 const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('@/pages/TermsOfService').then(m => ({ default: m.TermsOfService })));
 const AlexRamozyPage = lazy(() => import('./AlexRamozyPage').then(m => ({ default: m.AlexRamozyPage })));
+const WizardOfAI = lazy(() => import('@/pages/WizardOfAI').then(m => ({ default: m.default })));
+const RobotTest = lazy(() => import('@/pages/RobotTest').then(m => ({ default: m.default })));
+const Wave = lazy(() => import('@/pages/Wave').then(m => ({ default: m.default })));
+const Search = lazy(() => import('@/pages/Search').then(m => ({ default: m.default })));
 
 // Loading spinner component
 const LoadingSpinner = () => (
@@ -96,6 +100,11 @@ export function AppRouter() {
         <Route path="/alex-ramozy">
           <AlexRamozyPage onDemoClick={() => setLocation('/login')} />
         </Route>
+        <Route path="/wizard-of-ai" component={WizardOfAI} />
+        <Route path="/wizard-of-ai/wave" component={Wave} />
+        <Route path="/wave" component={Wave} />
+        <Route path="/robot-test" component={RobotTest} />
+        <Route path="/search" component={Search} />
 
         {/* Protected routes */}
         <Route path="/onboarding">

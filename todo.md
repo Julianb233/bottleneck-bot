@@ -410,6 +410,36 @@ Merge three systems:
   - `drizzle/migrations/0011_enhanced_cost_tracking.sql` - Database migration
 - [ ] Video tutorials for onboarding (Phase 11) - Scripts ready in `docs/VIDEO_TUTORIALS.md`
 
+### Swarms Dashboard Fixes ✅ COMPLETE (Dec 30, 2025)
+- [x] Fixed all non-working buttons in SwarmDashboard
+  - Added toast notifications for all actions (success/error feedback)
+  - Fixed Refresh button with proper error handling
+  - Fixed Create Swarm form with success/error toasts
+- [x] Fixed SwarmList component buttons
+  - View button opens swarm details dialog
+  - Stop button with proper error handling and success feedback
+  - Refresh button with toast notifications
+- [x] Fixed AgentTypesBrowser functionality
+  - Search input working properly
+  - Category filters working
+  - Agent selection working
+  - Refresh button with error handling
+- [x] Fixed SwarmView controls
+  - Pause/Resume monitoring button working
+  - Stop Swarm button with error handling
+  - Start Swarm button with error handling
+  - Add Agent button (placeholder with toast notification)
+  - Redistribute Tasks button (placeholder with toast notification)
+  - Refresh button with proper error handling
+- [x] Added comprehensive error handling
+  - All mutations have onError handlers with toast notifications
+  - All queries have proper error states
+  - User-friendly error messages throughout
+- [ ] Future enhancements:
+  - Implement Add Agent functionality (backend endpoint needed)
+  - Implement Redistribute Tasks functionality (backend endpoint needed)
+  - Add real-time updates via SSE for swarm status
+
 ---
 
 ## Reference Documents

@@ -191,14 +191,21 @@ export function errorHandler(
 /**
  * 404 Not Found handler
  * Handles routes that don't match any defined routes
+ * Only handles routes under /api/v1/ to avoid catching frontend routes
  */
 export function notFoundHandler(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  const error = ApiError.notFound(`Route ${req.method} ${req.path} not found`);
-  next(error);
+  // Only handle API routes, let other routes pass through to Vite/static files
+  if (req.path.startsWith('/api/v1/')) {
+    const error = ApiError.notFound(`Route ${req.method} ${req.path} not found`);
+    next(error);
+  } else {
+    // Pass through to next middleware (Vite or static file handler)
+    next();
+  }
 }
 
 /**

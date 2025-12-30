@@ -47,6 +47,7 @@ import {
   Network,
   BarChart3,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Types from server
 type AgentStatus = 'initializing' | 'idle' | 'busy' | 'paused' | 'error' | 'offline' | 'terminating' | 'terminated';
@@ -97,15 +98,23 @@ export function SwarmView({
   // Mutations
   const stopSwarm = trpc.swarm.stop.useMutation({
     onSuccess: () => {
+      toast.success('Swarm stopped successfully');
       refetchSwarms();
       refetchStatus();
+    },
+    onError: (error) => {
+      toast.error('Failed to stop swarm: ' + (error.message || 'Unknown error'));
     },
   });
 
   const startSwarm = trpc.swarm.start.useMutation({
     onSuccess: () => {
+      toast.success('Swarm started successfully');
       refetchSwarms();
       refetchStatus();
+    },
+    onError: (error) => {
+      toast.error('Failed to start swarm: ' + (error.message || 'Unknown error'));
     },
   });
 
@@ -187,7 +196,17 @@ export function SwarmView({
   };
 
   const handlePauseResume = () => {
-    setIsPaused(!isPaused);
+    const newPausedState = !isPaused;
+    setIsPaused(newPausedState);
+    toast.info(newPausedState ? 'Monitoring paused' : 'Monitoring resumed');
+  };
+
+  const handleAddAgent = () => {
+    toast.info('Add Agent feature coming soon');
+  };
+
+  const handleRedistributeTasks = () => {
+    toast.info('Task redistribution feature coming soon');
   };
 
   if (!activeSwarms?.swarms || activeSwarms.swarms.length === 0) {
@@ -223,8 +242,9 @@ export function SwarmView({
             variant="outline"
             size="icon"
             onClick={() => {
-              refetchSwarms();
-              refetchStatus();
+              Promise.all([refetchSwarms(), refetchStatus()])
+                .then(() => toast.success('Data refreshed'))
+                .catch((error) => toast.error('Failed to refresh: ' + (error?.message || 'Unknown error')));
             }}
             aria-label="Refresh data"
             className="min-h-[44px] min-w-[44px]"
@@ -366,12 +386,22 @@ export function SwarmView({
                     <span className="ml-2">Start Swarm</span>
                   </Button>
                 )}
-                <Button variant="outline" size="sm" className="min-h-[44px]">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="min-h-[44px]"
+                  onClick={handleAddAgent}
+                >
                   <Plus className="h-4 w-4" />
                   <span className="ml-2 hidden sm:inline">Add Agent</span>
                   <span className="ml-2 sm:hidden">Add</span>
                 </Button>
-                <Button variant="outline" size="sm" className="min-h-[44px]">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="min-h-[44px]"
+                  onClick={handleRedistributeTasks}
+                >
                   <RefreshCw className="h-4 w-4" />
                   <span className="ml-2 hidden sm:inline">Redistribute Tasks</span>
                   <span className="ml-2 sm:hidden">Redistribute</span>
